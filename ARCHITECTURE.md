@@ -1,12 +1,65 @@
-# Architecture Overview
 
-This system consists of:
 
-- Three Kubernetes clusters in different regions
-- Global DNS and load balancing for traffic routing
-- GitOps-based deployment using ArgoCD
-- PostgreSQL with cross-region replication
-- Redis for distributed caching
-- Centralized monitoring and logging
+---
 
-All regions are configured identically to allow seamless failover.
+# 📄 2️⃣ ARCHITECTURE.md (Design Explanation)
+
+# Architecture – Multi-Region Kubernetes Platform
+
+## High-Level Design
+The platform is designed to deploy Amazon EKS clusters in multiple AWS regions using Terraform.  
+Each region is fully isolated and contains its own networking and compute resources.
+
+---
+
+## Architecture Components
+
+### 1. VPC per Region
+For each AWS region:
+- A dedicated Virtual Private Cloud (VPC) is created.
+- This ensures network isolation between regions.
+
+### 2. Subnets
+Inside each VPC:
+- Two public subnets are created in different Availability Zones.
+- This enables high availability within a region.
+
+### 3. Internet Gateway and Routing
+- An Internet Gateway is attached to each VPC.
+- A public route table routes internet traffic to the subnets.
+
+### 4. Amazon EKS Cluster
+- One EKS cluster is created per region.
+- Each cluster uses the VPC and subnets from that region.
+- Clusters are independent and do not depend on each other.
+
+---
+
+## Multi-Region Strategy
+- Regions operate independently.
+- Failure in one region does not impact the others.
+- Enables geographic redundancy and disaster recovery.
+
+---
+
+## Logical Architecture Diagram
+
+User → AWS Region (VPC → Subnets → EKS Cluster)
+
+This structure is repeated for:
+- us-east-1
+- eu-west-1
+- ap-south-1
+
+---
+
+## Benefits
+- High Availability
+- Fault Isolation
+- Scalability
+- Infrastructure as Code using Terraform
+
+---
+
+## Summary
+The architecture follows a modular and region-isolated design, making it suitable for production-ready, multi-region Kubernetes deployments.

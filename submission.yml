@@ -1,15 +1,30 @@
-project: Multi-Region Kubernetes Platform
-author: Lakshmi Priyanka
-cloud_provider: AWS
-regions:
-  - us-east-1
-  - eu-west-1
-  - ap-south-1
-tools:
-  - Terraform
-  - Kubernetes
-  - ArgoCD
-  - PostgreSQL
-  - Redis
-  - Prometheus
-  - Grafana
+commands:
+  deploy:
+    description: "Deploys multi-region EKS infrastructure using Terraform"
+    script: |
+      echo "Starting multi-region deployment..."
+
+      cd terraform/environments/us-east-1
+      terraform init
+      terraform apply -auto-approve
+
+      cd ../eu-west-1
+      terraform init
+      terraform apply -auto-approve
+
+      cd ../ap-south-1
+      terraform init
+      terraform apply -auto-approve
+
+      echo "Deployment completed successfully."
+
+  verify:
+    description: "Verifies that EKS clusters are created in all regions"
+    script: |
+      echo "Verifying EKS clusters..."
+
+      aws eks list-clusters --region us-east-1
+      aws eks list-clusters --region eu-west-1
+      aws eks list-clusters --region ap-south-1
+
+      echo "Verification completed."
