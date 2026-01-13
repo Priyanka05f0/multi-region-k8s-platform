@@ -1,0 +1,15 @@
+project: Multi-Region Kubernetes Platform
+author: Lakshmi Priyanka
+cloud_provider: AWS
+regions:
+  - us-east-1
+  - eu-west-1
+  - ap-south-1
+tools:
+  - Terraform
+  - Kubernetes
+  - ArgoCD
+  - PostgreSQL
+  - Redis
+  - Prometheus
+  - Grafana
