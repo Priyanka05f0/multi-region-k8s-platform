@@ -34,6 +34,17 @@ Inside each VPC:
 - Clusters are independent and do not depend on each other.
 
 ---
+## Kubernetes Layer (Application)
+
+Each EKS cluster runs Kubernetes workloads on managed worker nodes:
+- A sample application is deployed using a Deployment object.
+- A Service of type LoadBalancer exposes the application externally.
+- AWS automatically provisions an Elastic Load Balancer per service.
+Traffic Flow:
+```
+User → AWS Load Balancer → EKS Worker Node → Pod (Application)
+```
+This validates that the cluster is fully functional and capable of serving production workloads.
 
 ## Multi-Region Strategy
 - Regions operate independently.
