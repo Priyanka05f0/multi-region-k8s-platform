@@ -37,6 +37,7 @@ cd ../ap-south-1
 terraform init
 terraform apply -auto-approve
 ```
+---
 ### Verification Steps
 
 Check if clusters exist:
@@ -51,6 +52,33 @@ aws eks update-kubeconfig --region us-east-1 --name multi-region-k8s-us-east-1
 kubectl get nodes
 ```
 Repeat for other regions as needed.
+
+---
+
+## Database & Caching Operations (Step 4)
+
+### Deploy PostgreSQL
+```bash
+kubectl apply -f gitops/apps/database/postgres.yaml
+```
+### Deploy Redis
+```
+kubectl apply -f gitops/apps/database/redis.yaml
+```
+### Verify Services
+```
+kubectl get pods
+kubectl get svc
+```
+You should see:
+- postgres pod in Running state
+- redis pod in Running state
+
+### Cleanup (Optional)
+```bash
+kubectl delete -f gitops/apps/database/postgres.yaml
+kubectl delete -f gitops/apps/database/redis.yaml
+```
 
 ## Common Issues & Fixes
 

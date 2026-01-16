@@ -53,6 +53,28 @@ This validates that the cluster is fully functional and capable of serving produ
 
 ---
 
+## Database & Caching Layer (Step 4)
+
+To support application data storage and caching, the platform includes in-cluster
+database and cache services deployed using Kubernetes manifests.
+
+### PostgreSQL
+- Deployed as a Kubernetes Deployment inside the cluster
+- Exposed internally using a ClusterIP service
+- Used for persistent application data storage
+
+### Redis
+- Deployed as a lightweight in-memory cache
+- Exposed internally using a ClusterIP service
+- Used to improve application performance and reduce database load
+
+These components are deployed using GitOps-style manifests located in:
+
+gitops/apps/database/
+
+This design keeps infrastructure (Terraform) separate from application services
+(Kubernetes manifests), following best practices for cloud-native platforms.
+
 ## Logical Architecture Diagram
 
 User → AWS Region (VPC → Subnets → EKS Cluster)
