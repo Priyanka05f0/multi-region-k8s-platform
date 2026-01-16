@@ -59,6 +59,50 @@ cd ../ap-south-1
 terraform init
 terraform apply -auto-approve
 ```
+## Application Deployment (Kubernetes)
+
+The sample application validates that the EKS cluster, node group, and load balancer are working correctly.
+
+A sample application was deployed to the ap-south-1 cluster using Kubernetes manifests.
+
+```bash
+kubectl apply -f gitops/apps/sample-app/deployment.yaml
+kubectl apply -f gitops/apps/sample-app/service.yaml
+kubectl get pods
+kubectl get svc
+curl http://<EXTERNAL-IP>
+```
+---
+
+## Database & Caching (Step 4)
+
+The platform includes basic data services deployed inside Kubernetes:
+
+- PostgreSQL is used as the relational database
+- Redis is used as an in-memory cache
+
+These services are deployed using Kubernetes manifests located under:
+
+gitops/apps/postgres/  
+gitops/apps/redis/
+
+Both services are exposed internally using ClusterIP services.
+
+---
+
+## Observability (Step 5)
+
+Basic observability is implemented using Prometheus.
+Prometheus can be accessed via kubectl port-forward if required.
+
+- Prometheus runs inside a dedicated namespace
+- It enables monitoring of Kubernetes workloads
+
+Manifests are located under:
+
+gitops/apps/observability/
+
+---
 
 ## How to Verify
 

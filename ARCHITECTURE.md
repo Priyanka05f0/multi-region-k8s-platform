@@ -69,11 +69,30 @@ database and cache services deployed using Kubernetes manifests.
 - Used to improve application performance and reduce database load
 
 These components are deployed using GitOps-style manifests located in:
-
-gitops/apps/database/
+```
+gitops/apps/postgres/  
+gitops/apps/redis/
+```
 
 This design keeps infrastructure (Terraform) separate from application services
 (Kubernetes manifests), following best practices for cloud-native platforms.
+
+## Supporting Services
+
+### Database & Caching
+- PostgreSQL provides persistent relational storage
+- Redis provides fast in-memory caching
+- Both run inside Kubernetes as internal services
+
+### Observability
+- Prometheus is deployed for monitoring
+- Runs in a dedicated namespace
+- Enables visibility into cluster workloads
+
+Manifests are maintained under:
+
+gitops/apps/observability/
+
 
 ## Logical Architecture Diagram
 

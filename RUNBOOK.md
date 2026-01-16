@@ -57,14 +57,39 @@ Repeat for other regions as needed.
 
 ## Database & Caching Operations (Step 4)
 
-### Deploy PostgreSQL
+Deploy PostgreSQL:
 ```bash
-kubectl apply -f gitops/apps/database/postgres.yaml
+kubectl apply -f gitops/apps/postgres/deployment.yaml
+kubectl apply -f gitops/apps/postgres/service.yaml
 ```
-### Deploy Redis
+
+Deploy Redis:
+```bash
+kubectl apply -f gitops/apps/redis/deployment.yaml
+kubectl apply -f gitops/apps/redis/service.yaml
 ```
-kubectl apply -f gitops/apps/database/redis.yaml
+Verify:
+```bash
+kubectl get pods
+kubectl get svc
 ```
+
+---
+
+## Observability (Step 5)
+
+Deploy Prometheus:
+```bash
+kubectl apply -f gitops/apps/observability/namespace.yaml
+kubectl apply -f gitops/apps/observability/prometheus.yaml
+```
+
+Verify:
+```bash
+kubectl get pods -n observability
+```
+Prometheus runs in a dedicated namespace called `observability`.
+
 ### Verify Services
 ```
 kubectl get pods
@@ -76,8 +101,11 @@ You should see:
 
 ### Cleanup (Optional)
 ```bash
-kubectl delete -f gitops/apps/database/postgres.yaml
-kubectl delete -f gitops/apps/database/redis.yaml
+kubectl delete -f gitops/apps/postgres/deployment.yaml
+kubectl delete -f gitops/apps/postgres/service.yaml
+
+kubectl delete -f gitops/apps/redis/deployment.yaml
+kubectl delete -f gitops/apps/redis/service.yaml
 ```
 
 ## Common Issues & Fixes
@@ -92,8 +120,13 @@ terraform init
 
 2. No Nodes Showing
 
-Reason: Only control plane is created (no worker nodes configured).
-This is expected for this project.
+RReason: Node group creation may still be in progress or kubeconfig is not updated.
+
+Fix:
+```bash
+aws eks update-kubeconfig --region <region> --name <cluster-name>
+kubectl get nodes
+```
 
 3. AWS Permission Errors
 
